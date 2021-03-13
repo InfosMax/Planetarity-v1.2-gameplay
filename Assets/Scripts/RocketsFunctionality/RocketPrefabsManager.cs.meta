@@ -1,0 +1,19 @@
+fileFormatVersion: 2
+guid: a8f42007c4e7f7b49ad9af3c6aba1d27
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - EasyRocket: {fileID: 5616377003282457040, guid: 9ba4cc31555e0834fac45a2657b580b0,
+      type: 3}
+  - HeavyRocket: {fileID: 6152018896422064645, guid: 9205ff15ce0c9104f84fed354f760dba,
+      type: 3}
+  - FastRocket: {fileID: 8183682395975513516, guid: 424726ff5cb9f0d428fd7e5d533a5c3d,
+      type: 3}
+  - ShortRocket: {fileID: 200025384373952320, guid: c0513cbcd1a37e84c88d0c04f6b6c46c,
+      type: 3}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

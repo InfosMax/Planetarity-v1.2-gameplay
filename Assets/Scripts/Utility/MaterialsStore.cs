@@ -2,16 +2,19 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[System.Serializable]
-public class MaterialsStore : MonoBehaviour
+namespace Planetarity.Utility
 {
-    [SerializeField]
-    private  List<Material> materials;
-
-    public List<Material> Materials { get => materials; set => materials = value; }
-
-    public Material GetRandomPlanetMaterial()
+    [System.Serializable]
+    public class MaterialsStore : Singleton<MaterialsStore>
     {
-        return Materials[Random.Range(0, Materials.Count)];
+        [SerializeField]
+        private List<Material> materials;
+
+        public List<Material> Materials { get => materials; set => materials = value; }
+
+        public Material GetRandomPlanetMaterial()
+        {
+            return Materials[Random.Range(0, Materials.Count)];
+        }
     }
 }

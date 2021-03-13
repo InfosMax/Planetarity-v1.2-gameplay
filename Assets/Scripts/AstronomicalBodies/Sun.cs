@@ -2,20 +2,24 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Sun : SpaceBody
+namespace Planetarity.AstronomicalBodies
 {
-    public new static int Size { get; private set; }
-
-    private void Awake()
+    public class Sun : SpaceBody
     {
-        Speed = 0f;
-        rotationVector = new Vector3(Random.value, Random.value, Random.value);
-        InitAppearance();
-    }
+        public new static int Size { get; private set; }
 
-    private void InitAppearance()
-    {
-        Size = Random.Range(10, 15);
-        transform.localScale *= Size;
+        protected override void Awake()
+        {
+            base.Awake();
+
+            Speed = 0f;
+            InitAppearance();
+        }
+
+        protected override void InitAppearance()
+        {
+            Size = Random.Range(10, 15);
+            transform.localScale *= Size;
+        }
     }
 }

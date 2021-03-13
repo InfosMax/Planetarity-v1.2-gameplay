@@ -2,7 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public interface ILevelGenerator
+namespace Planetarity.GameManagement
 {
-    void Generate(int enemiesMinNumber, int enemiesMaxNumber);
+    public interface ILevelGenerator
+    {
+        void Generate(int enemiesMinNumber, int enemiesMaxNumber);
+    }
 }
