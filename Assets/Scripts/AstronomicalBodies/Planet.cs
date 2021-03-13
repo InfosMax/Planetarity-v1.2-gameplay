@@ -24,7 +24,7 @@ namespace Planetarity.AstronomicalBodies
             base.Awake();
             // Clockwise or counter clockwise? 
             IsClockwise = Random.Range(0, 2) == 0 ? true : false;
-            OrbitRotationSpeed = Random.Range(15f, 45f);
+            OrbitRotationSpeed = Random.Range(10f, 25f);
             Speed = 5f;
             InitAppearance();
         }

@@ -12,7 +12,9 @@ namespace Planetarity.RocketsFunctionality
     {
         protected static GameObject rocketPrefab;
         public override GameObject RocketPrefab { get => rocketPrefab; set => rocketPrefab = value; }
-        protected static string rocketName = "FastRocketPref";
+        protected static string rocketName = "FastRocket";
+        protected static Texture2D rocketImg;
+        public override Texture2D RocketImg { get => rocketImg; set => rocketImg = value; }
         public override string RocketName { get => rocketName; set => rocketName = value; }
 
         protected override void InitParameters()

@@ -7,11 +7,35 @@ namespace Planetarity.PlayerFunctionality
 {
     public class Player : MonoBehaviour
     {
-        private GameManager gameManager;
+        protected GameManager gameManager;
+        protected PlayerStats stats;
 
-        void Start()
+        public void GetDamage(float damage)
         {
-            gameManager = GameManager.Instance;
+            if (stats.HP - damage <= 0f)
+            {
+                DestroyPlayer();
+            }   
+            else
+            {
+                stats.HP -= damage;
+            }
         }
+
+        public void launchRocket()
+        {
+
+        }
+
+        protected void DestroyPlayer()
+        {
+            Destroy(gameObject);
+        }
+    }
+
+    public class PlayerStats
+    {
+        public float HP { get; set; } = 50;
+        public float Cooldown { get; set; } = 5f;
     }
 }

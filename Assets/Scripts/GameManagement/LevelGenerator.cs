@@ -27,7 +27,6 @@ namespace Planetarity.GameManagement
             Instantiate(sunPrefab, Vector3.zero, Quaternion.identity);
 
             createPlanets(enemiesNum);
-
         }
 
         private void createPlanets(int planetsCount)
@@ -40,6 +39,12 @@ namespace Planetarity.GameManagement
                     new Vector3(Sun.Size / 2f + (DistanceBetweenPlanets * (i + 1)), 0f, 0f),
                     Quaternion.identity);
             }
+
+        }
+
+        public GameObject[] getPlanetsGO()
+        {
+            return Planets;
         }
     }
 }

@@ -6,10 +6,10 @@ namespace Planetarity.RocketsFunctionality
 {
     public interface IRocket
     {
-        Dictionary<RocketProperties, int> Parameters { get; }
+        Dictionary<RocketProperties, float> Parameters { get; }
 
-        void Launch(Vector3 dirrection);
-        int CalculateDamage();
+        void Fly();
+        float CalculateDamage();
     }
 }
 

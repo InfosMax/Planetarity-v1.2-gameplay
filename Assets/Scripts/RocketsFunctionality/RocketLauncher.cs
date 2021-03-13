@@ -11,13 +11,7 @@ namespace Planetarity.RocketsFunctionality
 
         public void InitiateLaunch(Rocket rocket)
         {
-            //Ins
-        }
-
-        // Update is called once per frame
-        void Update()
-        {
-
+            throw new System.NotImplementedException();
         }
     }
 }

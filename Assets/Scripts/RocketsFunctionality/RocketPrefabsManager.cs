@@ -7,30 +7,35 @@ namespace Planetarity.RocketsFunctionality
 {
     public class RocketPrefabsManager : IRocketPrefabManager
     {
-        private Dictionary<String, GameObject> rocketsPrefabs;
+        private Dictionary<String, (GameObject, Texture2D)> rocketsResources;
 
         public RocketPrefabsManager()
         {
-            rocketsPrefabs = new Dictionary<string, GameObject>();
+            rocketsResources = new Dictionary<string, (GameObject, Texture2D)>();
         }
 
-        public void AddRocket(KeyValuePair<String, GameObject> rocket)
+        public void AddRocket(KeyValuePair<String, (GameObject, Texture2D)> rocket)
         {
-            if (rocketsPrefabs.ContainsKey(rocket.Key))
+            if (rocketsResources.ContainsKey(rocket.Key))
             {
                 Debug.Log($"Rocket {rocket.Key} already exists in the store");
                 return;
             }
             else
             {
-                rocketsPrefabs.Add(rocket.Key, rocket.Value);
+                rocketsResources.Add(rocket.Key, rocket.Value);
             }  
         }
 
-        public GameObject GetRocketPrefab(string rocketName)
+        public (GameObject, Texture2D) GetRocketResources(string rocketName)
         {
-            rocketsPrefabs.TryGetValue(rocketName, out GameObject rocketPrefab);
-            return rocketPrefab;
+            Debug.Log(rocketsResources.Count);
+            foreach (KeyValuePair<String, (GameObject, Texture2D)> one in rocketsResources)
+            {
+                Debug.Log(one.Key);
+            }
+            rocketsResources.TryGetValue(rocketName, out (GameObject, Texture2D) rocketResource);
+            return rocketResource;
         }
 
     }
