@@ -6,7 +6,7 @@ namespace Planetarity.AstronomicalBodies
 {
     public class Sun : SpaceBody
     {
-        public new static int Size { get; private set; }
+        public static int ComparingSize { get; private set; }
 
         protected override void Awake()
         {
@@ -18,7 +18,7 @@ namespace Planetarity.AstronomicalBodies
 
         protected override void InitAppearance()
         {
-            Size = Random.Range(10, 15);
+            ComparingSize = Size = Random.Range(10, 15);
             transform.localScale *= Size;
         }
     }

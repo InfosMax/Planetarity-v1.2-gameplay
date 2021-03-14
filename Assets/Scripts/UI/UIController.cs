@@ -13,6 +13,7 @@ namespace Planetarity.UI
         [SerializeField]
         private Text HPtext;
 
+        private Image sliderImage;
         private Player player; 
         public Color camBackgroundColor1;
         public Color camBackgroundColor2;
@@ -25,6 +26,8 @@ namespace Planetarity.UI
             player = GameManagement.GameManager.Instance.Player;
             player.HPchanged += OnPlayerHPChanged;
             player.CooldownChanged += OnPlayerCooldownChanged;
+
+            sliderImage = slider.transform.GetChild(0).GetComponent<Image>();
         }
 
         void OnPlayerHPChanged(float newHP)
@@ -36,12 +39,19 @@ namespace Planetarity.UI
         {
             slider.maxValue = newCD;
             slider.value = newCD;
+            sliderImage.color = new Color(1f, 0.5f, 0f);
         }
 
         private void Update()
         {
-            if(slider.value > 0)
+            if (slider.value > 0)
+            {
+
                 slider.value -= Time.deltaTime;
+                if (slider.value <= 0)
+                    sliderImage.color = Color.green;
+            }
+
             CameraBackgroundColorLerp();
         }
 

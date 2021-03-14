@@ -31,7 +31,7 @@ namespace Planetarity.AstronomicalBodies
 
         protected override void InitAppearance()
         {
-            Size = Random.Range(MIN_SIZE, Sun.Size - 2);
+            Size = Random.Range(MIN_SIZE, Sun.ComparingSize - 2);
             transform.localScale *= Size;
             GetComponent<MeshRenderer>().material = MaterialsStore.Instance.GetRandomPlanetMaterial();
         }
