@@ -18,4 +18,10 @@ cooldown, etc.), which are distributed randomly amongst planets
 
 Press "P" to pause the game.
 
+Not implemented: 
+• Save/load feature 
+• UI: main menu
+• planet HUD
+Reason: lack of time.
+
 Project creator's full name: Lityuga Maksim Anatolievich. 
