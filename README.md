@@ -36,7 +36,6 @@ Press "P" to pause the game.
 Not implemented: 
 • Save/load feature 
 • UI: main menu
-• planet HUD
 
 
 Reason: lack of time.
