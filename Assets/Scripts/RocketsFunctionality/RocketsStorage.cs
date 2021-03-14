@@ -49,7 +49,7 @@ namespace Planetarity.RocketsFunctionality
             }
         }
 
-        //Method for getting rockets for bots
+        //Method for getting rockets for bots. Randomly gives only available rockets.
         public string GetAnyRocket()
         {
             if(rockets.Count > 0)
