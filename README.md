@@ -13,6 +13,7 @@ You need to create a singleplayer game mode with AI players (random number from
 
 configurable min/max values). 
 
+
 Rest of features:
 
 • Planets should be visually different (and random) 
@@ -28,13 +29,17 @@ cooldown, etc.), which are distributed randomly amongst planets
 • UI: main menu, HUD, planet HUD (HP bar, shooting cooldown) 
 
 
+
 Press "P" to pause the game.
+
 
 Not implemented: 
 • Save/load feature 
 • UI: main menu
 • planet HUD
 
+
 Reason: lack of time.
+
 
 Project creator's full name: Lityuga Maksim Anatolievich. 
