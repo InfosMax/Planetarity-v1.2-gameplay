@@ -26,7 +26,7 @@ namespace Planetarity.PlayerFunctionality
             gameManager = GameManager.Instance;
             rocketLauncStation = gameManager.GetRocketLaunchStation();
             InitRocketStorage();
-            InitGUI();
+            Invoke("InitGUI", 0.1f);
         }
 
         protected void InitGUI()
