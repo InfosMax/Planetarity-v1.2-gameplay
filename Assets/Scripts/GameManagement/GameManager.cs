@@ -10,8 +10,6 @@ namespace Planetarity.GameManagement
 {
     public class GameManager : Singleton<GameManager>, IRocketPrefabManager
     {
-        [SerializeField]
-        private Camera rocketCam;
         private RocketLaunchStation rocketLaunchStation;
         private LevelGenerator levelGenerator;
         private UIController UI_Controller;
@@ -90,6 +88,8 @@ namespace Planetarity.GameManagement
         public GameObject GetRocketPrefab(string rocketName) => rocketPrefabManager.GetRocketPrefab(rocketName);
 
         public string[] GetRocketsNames() => rocketPrefabManager.GetRocketsNames();
+
+        public void ShowNotification(string text) => UI_Controller.ShowNotification(text);
 
     }
 }

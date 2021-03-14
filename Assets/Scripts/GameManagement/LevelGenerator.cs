@@ -32,14 +32,12 @@ namespace Planetarity.GameManagement
         private void createPlanets(int planetsCount)
         {
             Planets = new List<GameObject>();
-            GameObject newPlanet;
 
             for (var i = 0; i < planetsCount; i++)
             {
-                newPlanet = Instantiate(planetPrefab,
+                Planets.Add( Instantiate(planetPrefab,
                     new Vector3(Sun.ComparingSize / 2f + (DistanceBetweenPlanets * (i + 1)), 0f, 0f),
-                    Quaternion.identity);
-                Planets.Add(newPlanet);
+                    Quaternion.identity));
             }
 
         }

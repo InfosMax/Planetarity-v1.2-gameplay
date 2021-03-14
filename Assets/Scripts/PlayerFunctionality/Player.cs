@@ -26,6 +26,7 @@ namespace Planetarity.PlayerFunctionality
             gameManager = GameManager.Instance;
             rocketLauncStation = gameManager.GetRocketLaunchStation();
             InitRocketStorage();
+            InitGUI();
         }
 
         protected void InitGUI()
@@ -74,7 +75,8 @@ namespace Planetarity.PlayerFunctionality
             }
             else
             {
-                Debug.Log("Launch not ready yet!");
+                if(this is RealPlayer)
+                    gameManager.ShowNotification("Launch not ready yet!");
                 return false;
             }
                
@@ -99,13 +101,13 @@ namespace Planetarity.PlayerFunctionality
         protected void DestroyPlayer()
         {
             gameManager.PlayerDied(this);
-            if (this.GetType() == typeof(RealPlayer))
+            if (this is RealPlayer)
             {
-                Debug.Log("YOU HAVE LOST THE GAME!!");
+                gameManager.ShowNotification("YOU HAVE LOST THE GAME!!");
             }
             else
             {
-                Debug.Log($"{gameObject} bot is destroyed!");
+                gameManager.ShowNotification($"{gameObject} bot is destroyed!");
             }
 
 

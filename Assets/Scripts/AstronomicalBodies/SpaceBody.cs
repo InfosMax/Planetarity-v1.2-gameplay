@@ -54,7 +54,7 @@ namespace Planetarity.AstronomicalBodies
             if (other.tag == "Rocket" && other.GetComponent<Rocket>().LauncherPlanet != gameObject)
             {
                 var forceVector = (transform.position - other.transform.position).normalized;
-                other.attachedRigidbody.AddForce(forceVector * Size * Size * Time.deltaTime * 200f, ForceMode.Force);
+                other.attachedRigidbody.AddForce(forceVector * Size * Time.deltaTime * 900f, ForceMode.Force);
             }
         }
     }
