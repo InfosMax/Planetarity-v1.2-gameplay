@@ -44,7 +44,7 @@ namespace Planetarity.RocketsFunctionality
             }
             else
             {
-                Debug.Log("Player doesn't have such a rocket.");
+                GameManagement.GameManager.Instance.ShowNotification("You don't have such a rocket! :(");
                 return false;
             }
         }

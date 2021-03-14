@@ -46,7 +46,7 @@ namespace Planetarity.PlayerFunctionality
         protected void InitRocketStorage()
         {
             rocketsStorage = new RocketsStorage();
-            rocketsStorage.Init(gameManager.GetRocketsNames(), 35, 45); 
+            rocketsStorage.Init(gameManager.GetRocketsNames(), 30, 40); 
         }
 
         public void GetDamage(float damage)
@@ -107,7 +107,9 @@ namespace Planetarity.PlayerFunctionality
             }
             else
             {
-                gameManager.ShowNotification($"{gameObject} bot is destroyed!");
+                gameManager.ShowNotification($"Bot is destroyed!\n{gameManager.GetPlanets().Length - 1 } is remaining! ");
+                if(gameManager.GetPlanets().Length == 1)
+                    gameManager.ShowNotification($"Congratulations!\nYou have won the game!");
             }
 
 
