@@ -63,7 +63,7 @@ namespace Planetarity.GameManagement
 
         }
 
-        private void TriggerPause()
+        public void TriggerPause()
         {
             if (Time.timeScale == 1f)
                 Time.timeScale = 0f;
