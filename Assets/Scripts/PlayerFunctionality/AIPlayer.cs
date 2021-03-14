@@ -8,13 +8,10 @@ namespace Planetarity.PlayerFunctionality
     {
         protected override Vector3 GetRocketDirrection()
         {
-            // Vector3 playerDir = (gameManager.Player.transform.position - transform.position).normalized;
-
             GameObject[] enemies = gameManager.GetPlanets();
 
             Vector3 enemyDir = (enemies[Random.Range(0, enemies.Length)].transform.position - transform.position).normalized;
 
-            //Debug.DrawLine(transform.position, transform.position + enemyDir * 10, Color.red, Mathf.Infinity);
             return enemyDir;  
         }
 

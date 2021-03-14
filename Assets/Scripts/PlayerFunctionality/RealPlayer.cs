@@ -30,8 +30,6 @@ namespace Planetarity.PlayerFunctionality
             mousePos = Camera.main.ScreenToWorldPoint(mousePos);
             Vector3 mouseDirrection = (mousePos - transform.position).normalized;
 
-            Debug.DrawLine(transform.position, transform.position + mouseDirrection * 10, Color.red, Mathf.Infinity);
-
             return mouseDirrection;
         }
 
