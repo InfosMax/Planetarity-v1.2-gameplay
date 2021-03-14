@@ -14,12 +14,27 @@ namespace Planetarity.PlayerFunctionality
         protected PlayerStats stats;
         protected RocketsStorage rocketsStorage;
 
+        public delegate void statChanged(float change);
+        // Shows new HP.
+        public event statChanged HPchanged;
+        // Shows new CD.
+        public event statChanged CooldownChanged;
+
         protected virtual void Start()
         {
             stats = new PlayerStats();
             gameManager = GameManager.Instance;
             rocketLauncStation = gameManager.GetRocketLaunchStation();
             InitRocketStorage();
+        }
+
+        protected void InitGUI()
+        {
+            if (HPchanged != null)
+                HPchanged(stats.HP);
+
+            if (CooldownChanged != null)
+                CooldownChanged(stats.Cooldown);
         }
 
         protected virtual void Update()
@@ -30,24 +45,30 @@ namespace Planetarity.PlayerFunctionality
         protected void InitRocketStorage()
         {
             rocketsStorage = new RocketsStorage();
-            rocketsStorage.Init(gameManager.GetRocketsNames(), 25, 35); 
+            rocketsStorage.Init(gameManager.GetRocketsNames(), 35, 45); 
         }
 
         public void GetDamage(float damage)
         {
             if (stats.HP - damage <= 0f)
             {
+                stats.HP -= damage;
                 DestroyPlayer();
             }   
             else
             {
                 stats.HP -= damage;
             }
+            if (HPchanged != null)
+            {
+                HPchanged(stats.HP >= 0f ? stats.HP : 0f);
+            }
+                
         }
 
         protected virtual bool CheckLaunchPossible(string rocketName)
         {
-            if (stats.Cooldown <= 0f)
+            if (stats.Cooldown <= 0f && !stats.isDead)
             {
                 return true;
             }
@@ -66,6 +87,10 @@ namespace Planetarity.PlayerFunctionality
             {
                 float coolDown = rocketLauncStation.InitiateLaunch(this, rocketName, GetRocketDirrection()).GetRocketCooldown();
                 stats.Cooldown = coolDown;
+                if(CooldownChanged != null)
+                {
+                    CooldownChanged(coolDown);
+                }
             }
         }
 

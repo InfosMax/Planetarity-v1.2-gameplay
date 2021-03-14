@@ -20,6 +20,7 @@ namespace Planetarity.PlayerFunctionality
         {
             base.Start();
             selectedRocketType = gameManager.GetRocketsNames()[0];
+            InitGUI();
         }
 
         protected override Vector3 GetRocketDirrection()

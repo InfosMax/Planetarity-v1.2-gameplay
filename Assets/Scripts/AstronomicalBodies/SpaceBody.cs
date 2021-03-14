@@ -39,7 +39,7 @@ namespace Planetarity.AstronomicalBodies
         {
             ObjectGravityZone = gameObject.AddComponent<SphereCollider>();
             ObjectGravityZone.isTrigger = true;
-            ObjectGravityZone.radius = 1.2f;
+            ObjectGravityZone.radius = 1.5f;
         }
 
         protected virtual void InitAppearance()
