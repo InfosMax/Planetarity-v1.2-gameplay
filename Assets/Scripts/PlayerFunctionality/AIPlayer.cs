@@ -10,12 +10,12 @@ namespace Planetarity.PlayerFunctionality
         {
             // Vector3 playerDir = (gameManager.Player.transform.position - transform.position).normalized;
 
-            // Better to calculate closest enemy
             GameObject[] enemies = gameManager.GetPlanets();
 
             Vector3 enemyDir = (enemies[Random.Range(0, enemies.Length)].transform.position - transform.position).normalized;
-            Vector3 deviation = new Vector3(Random.value /3f , Random.value / 3f, 0f);
-            return enemyDir + deviation;
+
+            //Debug.DrawLine(transform.position, transform.position + enemyDir * 10, Color.red, Mathf.Infinity);
+            return enemyDir;  
         }
 
         protected override void Start()

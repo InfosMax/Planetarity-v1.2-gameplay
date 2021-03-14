@@ -16,7 +16,7 @@ namespace Planetarity.GameManagement
 
         public float DistanceBetweenPlanets { get => distanceBetweenPlanets; set => distanceBetweenPlanets = value; }
         public GameObject SunObj { get; set; }
-        public GameObject[] Planets { get; set; }
+        public List<GameObject> Planets { get; set; }
 
         public void Generate(int enemiesMinNumber, int enemiesMaxNumber)
         {
@@ -31,20 +31,25 @@ namespace Planetarity.GameManagement
 
         private void createPlanets(int planetsCount)
         {
-            Planets = new GameObject[planetsCount];
+            Planets = new List<GameObject>();
 
             for (var i = 0; i < planetsCount; i++)
             {
-                Planets[i] = Instantiate(planetPrefab,
+                Planets.Add( Instantiate(planetPrefab,
                     new Vector3(Sun.Size / 2f + (DistanceBetweenPlanets * (i + 1)), 0f, 0f),
-                    Quaternion.identity);
+                    Quaternion.identity));
             }
 
         }
 
+        public void removePlayerPlanetFromList(GameObject planet)
+        {
+            Planets.Remove(planet);
+        }
+
         public GameObject[] getPlanetsGO()
         {
-            return Planets;
+            return Planets.ToArray();
         }
     }
 }

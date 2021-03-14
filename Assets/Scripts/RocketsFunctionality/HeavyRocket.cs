@@ -21,10 +21,10 @@ namespace Planetarity.RocketsFunctionality
             base.InitParameters();
 
             Parameters[RocketProperties.Cooldown] = 5f;
-            Parameters[RocketProperties.Acceleration] = 1f;
+            Parameters[RocketProperties.Acceleration] = 2f;
 
             Parameters[RocketProperties.Damage] = 5f;
-            Parameters[RocketProperties.FuelCapacity] = 5f;
+            Parameters[RocketProperties.FuelCapacity] = 4f;
         }
     }
 }

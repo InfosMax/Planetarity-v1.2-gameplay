@@ -22,7 +22,7 @@ public class ShortRocket : Rocket
         {
             base.InitParameters();
 
-            Parameters[RocketProperties.FuelCapacity] = 1f;
+            Parameters[RocketProperties.FuelCapacity] = 2f;
 
             Parameters[RocketProperties.Damage] = 4f;
             Parameters[RocketProperties.Cooldown] = 2f;

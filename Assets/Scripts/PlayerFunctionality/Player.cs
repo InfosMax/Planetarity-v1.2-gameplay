@@ -30,7 +30,7 @@ namespace Planetarity.PlayerFunctionality
         protected void InitRocketStorage()
         {
             rocketsStorage = new RocketsStorage();
-            rocketsStorage.Init(gameManager.GetRocketsNames(), 15, 35); 
+            rocketsStorage.Init(gameManager.GetRocketsNames(), 25, 35); 
         }
 
         public void GetDamage(float damage)
@@ -45,7 +45,20 @@ namespace Planetarity.PlayerFunctionality
             }
         }
 
-        protected virtual bool CheckLaunchPossible(string rocketName) => stats.Cooldown <= 0f;
+        protected virtual bool CheckLaunchPossible(string rocketName)
+        {
+            if (stats.Cooldown <= 0f)
+            {
+                return true;
+            }
+            else
+            {
+                Debug.Log("Launch not ready yet!");
+                return false;
+            }
+               
+        }
+
 
         protected void LaunchRocket(string rocketName)
         {
@@ -60,8 +73,16 @@ namespace Planetarity.PlayerFunctionality
 
         protected void DestroyPlayer()
         {
+            gameManager.PlayerDied(this);
             if (this.GetType() == typeof(RealPlayer))
+            {
                 Debug.Log("YOU HAVE LOST THE GAME!!");
+            }
+            else
+            {
+                Debug.Log($"{gameObject} bot is destroyed!");
+            }
+
 
             GetComponent<MeshRenderer>().enabled = false;
             GetComponent<Planet>().enabled = false;
@@ -71,6 +92,7 @@ namespace Planetarity.PlayerFunctionality
             Destroy(gameObject, 4f);
         }
     }
+    
 
     [System.Serializable]
     public class PlayerStats

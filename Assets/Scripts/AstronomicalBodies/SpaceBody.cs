@@ -7,7 +7,7 @@ namespace Planetarity.AstronomicalBodies
 {
     public abstract class SpaceBody : MonoBehaviour
     {
-        protected const int MIN_SIZE = 3;
+        protected const int MIN_SIZE = 4;
         public int Size { get; protected set; }
         public float Speed { get; set; }
         public SphereCollider ObjectGravityZone { get; set; }
@@ -39,7 +39,7 @@ namespace Planetarity.AstronomicalBodies
         {
             ObjectGravityZone = gameObject.AddComponent<SphereCollider>();
             ObjectGravityZone.isTrigger = true;
-            ObjectGravityZone.radius = 1f;
+            ObjectGravityZone.radius = 1.2f;
         }
 
         protected virtual void InitAppearance()
@@ -54,7 +54,7 @@ namespace Planetarity.AstronomicalBodies
             if (other.tag == "Rocket" && other.GetComponent<Rocket>().LauncherPlanet != gameObject)
             {
                 var forceVector = (transform.position - other.transform.position).normalized;
-                other.attachedRigidbody.AddForce(forceVector * this.Size * Time.deltaTime * 500f, ForceMode.Force);
+                other.attachedRigidbody.AddForce(forceVector * this.Size * Time.deltaTime * 700f, ForceMode.Force);
             }
         }
     }

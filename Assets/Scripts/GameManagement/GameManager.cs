@@ -73,6 +73,12 @@ namespace Planetarity.GameManagement
                 Time.timeScale = 1f;
         }
 
+        public void SelectPlayerRocketName(string rocketName)
+        {
+            player.SetRocketType(rocketName);
+        }
+        public void PlayerDied(Player player) => levelGenerator.removePlayerPlanetFromList(player.gameObject);
+
         public GameObject[] GetPlanets() => levelGenerator.getPlanetsGO();
 
         public RocketLaunchStation GetRocketLaunchStation() => rocketLaunchStation;

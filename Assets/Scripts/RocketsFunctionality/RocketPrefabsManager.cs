@@ -18,7 +18,6 @@ namespace Planetarity.RocketsFunctionality
         {
             if (rocketsResources.ContainsKey(rocket.Key))
             {
-                Debug.Log($"Rocket {rocket.Key} already exists in the store");
                 return;
             }
             else
