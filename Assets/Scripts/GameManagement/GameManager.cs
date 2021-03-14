@@ -10,16 +10,22 @@ namespace Planetarity.GameManagement
 {
     public class GameManager : Singleton<GameManager>, IRocketPrefabManager
     {
+        [SerializeField]
+        private Camera rocketCam;
+        private RocketLaunchStation rocketLaunchStation;
         private LevelGenerator levelGenerator;
         private UIController UI_Controller;
         private RocketPrefabsManager rocketPrefabManager;
         private MaterialsStore materialsStore;
         private RealPlayer player;
+        public RealPlayer Player { get => player; set => player = value; }
         public MaterialsStore PlanetMaterials { get => materialsStore; set => materialsStore = value; }
 
         void Awake()
         {
             rocketPrefabManager = new RocketPrefabsManager();
+
+            rocketLaunchStation = GetComponent<RocketLaunchStation>();
             levelGenerator = GetComponent<LevelGenerator>();
             PlanetMaterials = GetComponent<MaterialsStore>();
             UI_Controller = GetComponent<UIController>();
@@ -40,7 +46,7 @@ namespace Planetarity.GameManagement
             {
                 if(playerIndex == i)
                 {
-                    player = Planets[i].AddComponent<RealPlayer>();
+                    Player = Planets[i].AddComponent<RealPlayer>();
                     //Camera.main.transform.parent = Planets[i].transform;
                 }
                 else
@@ -50,15 +56,34 @@ namespace Planetarity.GameManagement
             }
         }
 
-        public void AddRocket(KeyValuePair<string, (GameObject, Texture2D)> rocket)
+        void Update()
         {
-            rocketPrefabManager.AddRocket(rocket);
+            if (Input.GetKeyDown(KeyCode.P))
+            {
+                TriggerPause();
+            }
+
         }
 
-        public (GameObject, Texture2D) GetRocketResources(string rocketName)
+        private void TriggerPause()
         {
-            return rocketPrefabManager.GetRocketResources(rocketName);
+            if (Time.timeScale == 1f)
+                Time.timeScale = 0f;
+            else
+                Time.timeScale = 1f;
         }
+
+        public GameObject[] GetPlanets() => levelGenerator.getPlanetsGO();
+
+        public RocketLaunchStation GetRocketLaunchStation() => rocketLaunchStation;
+
+        public void AddRocket(KeyValuePair<string, (GameObject, Texture2D)> rocket) => RocketPrefabsManager.AddRocket(rocket);
+
+        public (GameObject, Texture2D) GetRocketResources(string rocketName) => rocketPrefabManager.GetRocketResources(rocketName);
+
+        public GameObject GetRocketPrefab(string rocketName) => rocketPrefabManager.GetRocketPrefab(rocketName);
+
+        public string[] GetRocketsNames() => rocketPrefabManager.GetRocketsNames();
 
     }
 }

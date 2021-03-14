@@ -6,8 +6,9 @@ namespace Planetarity.RocketsFunctionality
 {
     public interface IRocketPrefabManager
     {
-        void AddRocket(KeyValuePair<string, (GameObject, Texture2D)> rocket);
         (GameObject, Texture2D) GetRocketResources(string rocketName);
+        GameObject GetRocketPrefab(string rocketName);
+        string[] GetRocketsNames();
     }
 }
 

@@ -3,11 +3,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using Planetarity.PlayerFunctionality;
 
 namespace Planetarity.RocketsFunctionality
 {
     public abstract class Rocket : MonoBehaviour, IRocket
     {
+        private GameObject launcherPlanet;
         private Rigidbody rigidBody = null;
         public abstract string RocketName { get; set; }
         public abstract GameObject RocketPrefab { get; set; }
@@ -17,16 +19,19 @@ namespace Planetarity.RocketsFunctionality
         protected Dictionary<RocketProperties, float> parameters = new Dictionary<RocketProperties, float>();
         public Dictionary<RocketProperties, float> Parameters => parameters;
 
+        public GameObject LauncherPlanet { get => launcherPlanet; set => launcherPlanet = value; }
+
         protected virtual void Awake()
         {
             InitParameters();
             loadResources();
+            GameManagement.GameManager.Instance.AddRocket(new KeyValuePair<string, (GameObject, Texture2D)>(RocketName, (RocketPrefab, RocketImg)));
         }
 
         protected virtual void Start()
         {
             PostInitCalculations();
-            GameManagement.GameManager.Instance.AddRocket(new KeyValuePair<string, (GameObject, Texture2D)> (RocketName, (RocketPrefab, RocketImg)) );
+            Destroy(this, 10f);
         }
 
         protected void loadResources()
@@ -76,6 +81,11 @@ namespace Planetarity.RocketsFunctionality
             }
         }
 
+        public float GetRocketCooldown()
+        {
+            return Parameters[RocketProperties.Cooldown];
+        }
+
         public float CalculateDamage()
         {
             Parameters.TryGetValue(RocketProperties.Damage, out float Damage);
@@ -85,6 +95,27 @@ namespace Planetarity.RocketsFunctionality
         private void Update()
         {
             Fly();
+        }
+
+        private void OnCollisionEnter(Collision collision)
+        {
+            if (LauncherPlanet == collision.gameObject)
+                return;
+
+            Player collisionPlayer = collision.gameObject.GetComponent<Player>();
+            if (collisionPlayer != null)
+                collisionPlayer.GetDamage(Parameters[RocketProperties.Damage]);
+
+            foreach (Transform child in transform)
+            {
+                Destroy(child.gameObject);
+            }
+            GetComponent<Rigidbody>().isKinematic = true;
+            GetComponent<CapsuleCollider>().enabled = false;
+
+
+            GetComponent<ParticleSystem>().Play();
+            Destroy(gameObject, 4f);
         }
     }
 }

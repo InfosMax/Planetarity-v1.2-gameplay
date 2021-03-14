@@ -9,15 +9,10 @@ namespace Planetarity.UI
     {
         public Color camBackgroundColor1;
         public Color camBackgroundColor2;
+        [SerializeField]
         private Canvas canvas;
         //private UIBuilder builder;
-        
-        void Start()
-        {
-            canvas = FindObjectOfType<Canvas>();
-            if (canvas == null)
-                Debug.Log("Canvas is missing!");
-        }
+       
         private void Update()
         {
             CameraBackgroundColorLerp();

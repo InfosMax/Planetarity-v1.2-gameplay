@@ -7,14 +7,14 @@ namespace Planetarity.RocketsFunctionality
 {
     public class RocketPrefabsManager : IRocketPrefabManager
     {
-        private Dictionary<String, (GameObject, Texture2D)> rocketsResources;
+        private static Dictionary<string, (GameObject, Texture2D)> rocketsResources;
 
-        public RocketPrefabsManager()
+        static RocketPrefabsManager()
         {
             rocketsResources = new Dictionary<string, (GameObject, Texture2D)>();
         }
 
-        public void AddRocket(KeyValuePair<String, (GameObject, Texture2D)> rocket)
+        public static void AddRocket(KeyValuePair<string, (GameObject, Texture2D)> rocket)
         {
             if (rocketsResources.ContainsKey(rocket.Key))
             {
@@ -29,13 +29,35 @@ namespace Planetarity.RocketsFunctionality
 
         public (GameObject, Texture2D) GetRocketResources(string rocketName)
         {
-            Debug.Log(rocketsResources.Count);
-            foreach (KeyValuePair<String, (GameObject, Texture2D)> one in rocketsResources)
+            if (rocketsResources.TryGetValue(rocketName, out (GameObject, Texture2D) rocketResource))
             {
-                Debug.Log(one.Key);
+                return rocketResource;
             }
-            rocketsResources.TryGetValue(rocketName, out (GameObject, Texture2D) rocketResource);
-            return rocketResource;
+            else
+            {
+                Debug.Log("Such a rocket doesn't exist!");
+                return (null, null);
+            }
+        }
+
+        public GameObject GetRocketPrefab(string rocketName)
+        {
+            if (rocketsResources.TryGetValue(rocketName, out (GameObject, Texture2D) rocketPrefab))
+            {
+                return rocketPrefab.Item1;
+            }
+            else
+            {
+                Debug.Log("Such a rocket doesn't exist!");
+                return null;
+            }
+        }
+
+        public string[] GetRocketsNames()
+        {
+            var rocketsResourcesKeys = new string[rocketsResources.Count];
+            rocketsResources.Keys.CopyTo(rocketsResourcesKeys, 0);
+            return rocketsResourcesKeys;
         }
 
     }

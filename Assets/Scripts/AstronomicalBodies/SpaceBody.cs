@@ -30,6 +30,11 @@ namespace Planetarity.AstronomicalBodies
             rotationVector = new Vector3(Random.value, Random.value, Random.value);
         }
 
+        protected virtual void Start()
+        {
+            AssignGravityZone();
+        }
+
         protected void AssignGravityZone()
         {
             ObjectGravityZone = gameObject.AddComponent<SphereCollider>();
@@ -46,12 +51,11 @@ namespace Planetarity.AstronomicalBodies
         // Space object's gravitation implementation
         private void OnTriggerStay(Collider other)
         {
-            if (other.GetComponent<Rocket>() != null)
+            if (other.tag == "Rocket" && other.GetComponent<Rocket>().LauncherPlanet != gameObject)
             {
                 var forceVector = (transform.position - other.transform.position).normalized;
-                other.attachedRigidbody.AddForce(forceVector * this.Size, ForceMode.Force);
+                other.attachedRigidbody.AddForce(forceVector * this.Size * Time.deltaTime * 500f, ForceMode.Force);
             }
-
         }
     }
 }
