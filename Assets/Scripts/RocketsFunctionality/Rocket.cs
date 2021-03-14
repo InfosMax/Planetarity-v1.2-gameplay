@@ -31,7 +31,7 @@ namespace Planetarity.RocketsFunctionality
         protected virtual void Start()
         {
             PostInitCalculations();
-            Destroy(this, 10f);
+            Destroy(gameObject, 8f);
         }
 
         protected void loadResources()
@@ -59,8 +59,9 @@ namespace Planetarity.RocketsFunctionality
 
         protected virtual void PostInitCalculations()
         {
-            // Rocket's weight equals to doubled FuelCapacity
-            Parameters[RocketProperties.Weight] = Parameters[RocketProperties.FuelCapacity] * 2;
+            // Rocket's weight equals to triple FuelCapacity
+            Parameters[RocketProperties.Weight] = Parameters[RocketProperties.FuelCapacity] * 3f;
+            Parameters[RocketProperties.Damage] *= 2f;
             rigidBody = GetComponent<Rigidbody>();
             if (rigidBody)
             {

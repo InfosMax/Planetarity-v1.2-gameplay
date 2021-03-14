@@ -21,7 +21,7 @@ namespace Planetarity.RocketsFunctionality
         {
             GameObject rocketPrefab = GM.GetRocketPrefab(rocketName);
             Rocket newRocket = Instantiate(rocketPrefab, 
-                initiator.transform.position + dirrection * (initiator.transform.localScale.x / 2f + 0.2f),
+                initiator.transform.position + dirrection * (initiator.transform.localScale.x),
                 Quaternion.Euler(dirrection) ).GetComponent<Rocket>();
 
             newRocket.LauncherPlanet = initiator.gameObject;
