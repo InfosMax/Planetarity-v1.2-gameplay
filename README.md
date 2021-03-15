@@ -35,7 +35,6 @@ Press "P" to pause the game.
 
 Not implemented: 
 • Save/load feature 
-• UI: main menu
 
 
 Reason: lack of time.
