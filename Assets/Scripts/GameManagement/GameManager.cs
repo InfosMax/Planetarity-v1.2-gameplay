@@ -5,11 +5,13 @@ using Planetarity.Utility;
 using Planetarity.RocketsFunctionality;
 using Planetarity.UI;
 using Planetarity.PlayerFunctionality;
+using UnityEngine.SceneManagement;
 
 namespace Planetarity.GameManagement
 {
     public class GameManager : Singleton<GameManager>, IRocketPrefabManager
     {
+        private bool isPaused = false;
         private RocketLaunchStation rocketLaunchStation;
         private LevelGenerator levelGenerator;
         private UIController UI_Controller;
@@ -56,19 +58,61 @@ namespace Planetarity.GameManagement
 
         void Update()
         {
-            if (Input.GetKeyDown(KeyCode.P))
+            if (Input.GetKeyDown(KeyCode.P) && !UI_Controller.IsMainMenuActive)
             {
-                TriggerPause();
+                togglePause();
+            }
+
+            if (Input.GetKeyDown(KeyCode.Escape))
+            {
+                ToggleMainMenu(!UI_Controller.IsMainMenuActive);
             }
 
         }
 
-        public void TriggerPause()
+        public void togglePause()
         {
-            if (Time.timeScale == 1f)
+            setPause(!isPaused);
+        }
+
+        public void setPause(bool doSet)
+        {
+            if (doSet)
+            {
+                isPaused = true;
                 Time.timeScale = 0f;
+            }
             else
+            {
+                isPaused = false;
                 Time.timeScale = 1f;
+            }
+                
+        }
+
+        public void ToggleMainMenu(bool activate)
+        {
+            if (activate)
+            {
+                setPause(true);
+                UI_Controller.ToggleMainMenu();
+            }
+            else
+            {
+                setPause(false);
+                UI_Controller.ToggleMainMenu();
+            }
+        }
+
+        public void Restart()
+        {
+            setPause(!isPaused);
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        }
+
+        public void Quit()
+        {
+            Application.Quit();
         }
 
         public void SelectPlayerRocketName(string rocketName)

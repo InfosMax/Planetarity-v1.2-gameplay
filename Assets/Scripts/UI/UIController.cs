@@ -11,6 +11,7 @@ namespace Planetarity.UI
         [SerializeField]
         private GameObject notificationPanel;
         private bool isRoutineShowing;
+        private bool isMainMenuActive = false;
         private Text notificationText;
         [SerializeField]
         private Slider slider;
@@ -26,6 +27,12 @@ namespace Planetarity.UI
         public Color camBackgroundColor2;
         [SerializeField]
         private Canvas canvas;
+
+        [SerializeField]
+        private Canvas screenSpaceCanvas;
+
+        public bool IsMainMenuActive { get => isMainMenuActive; set => isMainMenuActive = value; }
+
         //private UIBuilder builder;
 
         private void Start()
@@ -74,14 +81,14 @@ namespace Planetarity.UI
             CameraBackgroundColorLerp();
         }
 
-        public Canvas getCanvas()
+        public Canvas getMainCanvas()
         {
             return canvas;
         }
 
         void CameraBackgroundColorLerp()
         {
-            canvas.GetComponent<Image>().color = Color.Lerp(camBackgroundColor1, camBackgroundColor2, Mathf.PingPong(Time.unscaledTime * 0.1f, 1));
+            screenSpaceCanvas.GetComponent<Image>().color = Color.Lerp(camBackgroundColor1, camBackgroundColor2, Mathf.PingPong(Time.unscaledTime * 0.1f, 1));
         }
 
         public void ShowNotification(string text)
@@ -97,6 +104,18 @@ namespace Planetarity.UI
             yield return new WaitForSeconds(text.Length / 3f + 1f);
             notificationPanel.SetActive(false);
         }
+        private void OnDestroy()
+        {
+            player.HPchanged -= OnPlayerHPChanged;
+            player.CooldownChanged -= OnPlayerCooldownChanged;
+        }
+
+        public void ToggleMainMenu()
+        {
+            IsMainMenuActive = !IsMainMenuActive;
+            canvas.transform.Find("Main Menu").gameObject.SetActive(IsMainMenuActive);
+        }
+
     }
 }
 

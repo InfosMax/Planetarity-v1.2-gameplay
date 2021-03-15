@@ -51,6 +51,12 @@ namespace Planetarity.UI
             }
         }
 
+        private void OnDestroy()
+        {
+            player.HPchanged -= OnPlayerHPChanged;
+            player.CooldownChanged -= OnPlayerCooldownChanged;
+        }
+
         private void alignUI()
         {
             Quaternion newQuaternion = Quaternion.Euler(0f, 0f, -transform.rotation.z);
