@@ -30,13 +30,12 @@ cooldown, etc.), which are distributed randomly amongst planets
 
 
 
-Press "P" to pause the game.
+
+Press "P" to pause the game. (Also "Escape" for main menu)
 
 
 Not implemented: 
 • Save/load feature 
-
-
 Reason: lack of time.
 
 
