@@ -1,5 +1,5 @@
 # Planetarity-v1.2-gameplay
-Planetarity v1.2  gameplay for Ubisoft :)  
+Planetarity v1.2  gameplay
 
 This is a planetary artillery arcade in pseudo 2D (i.e. 2D game in the 3D world).
 
@@ -24,19 +24,7 @@ cooldown, etc.), which are distributed randomly amongst planets
 
 • Pause/resume feature 
 
-• Save/load feature 
-
 • UI: main menu, HUD, planet HUD (HP bar, shooting cooldown) 
 
 
-
-
 Press "P" to pause the game. (Also "Escape" for main menu)
-
-
-Not implemented: 
-• Save/load feature 
-Reason: lack of time.
-
-
-Project creator's full name: Lityuga Maksim Anatolievich. 
