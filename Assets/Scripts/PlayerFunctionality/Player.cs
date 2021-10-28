@@ -8,6 +8,7 @@ namespace Planetarity.PlayerFunctionality
 {
     public abstract class Player : MonoBehaviour
     {
+        protected const float DefaultPlayerHP = 50f;
         protected const int DefaultRocketsNumber = 35;
         protected IRocketLaunchSystem rocketLaunchSystem;
         protected PlayerStats stats;
@@ -31,7 +32,7 @@ namespace Planetarity.PlayerFunctionality
         {
             stats = new PlayerStats() { 
                 IsDead = false,
-                HP = 1, 
+                HP = DefaultPlayerHP, 
                 Cooldown = 5f
             };
             gameManager = GameManager.Instance;

@@ -11,30 +11,32 @@ namespace Planetarity.UI
     {
         private Player player;
 
+
+        [SerializeField]
         private Slider slider;
-        private Text UItext;
+        [SerializeField]
+        private Text HPValueText;
+        [SerializeField]
+        private Text HPTitleText;
+
+        private Quaternion zeroRotation = Quaternion.Euler(Vector3.zero);
+        private Transform cachedTransform;
 
         private void Start()
         {
+            cachedTransform = transform;
             player = GetComponentInParent<Player>();
-            slider = transform.Find("Panel/Slider").GetComponent<Slider>();
-            UItext = transform.Find("Panel/Player HP").GetComponent<Text>();
 
             player.HPchanged += OnPlayerHPChanged;
             player.CooldownChanged += OnPlayerCooldownChanged;
 
+            //set equal size of all PlanetCanvases relative to parent
+            transform.localScale *= Mathf.Max(1f, 8f/player.transform.localScale.x);
         }
 
         void OnPlayerHPChanged(float newHP)
         {
-            if(player is RealPlayer)
-            {
-                UItext.text = "Your HP - " + newHP;
-            }
-            else
-            {
-                UItext.text = "Enemy HP - " + newHP;
-            }
+            HPValueText.text = newHP.ToString();
         }
 
         void OnPlayerCooldownChanged(float newCD)
@@ -44,7 +46,7 @@ namespace Planetarity.UI
         }
         void Update()
         {
-            alignUI();
+            cachedTransform.rotation = zeroRotation;
             if (slider.value > 0)
             {
                 slider.value -= Time.deltaTime;
@@ -57,10 +59,12 @@ namespace Planetarity.UI
             player.CooldownChanged -= OnPlayerCooldownChanged;
         }
 
-        private void alignUI()
+        public void InitMainPlayerUI()
         {
-            Quaternion newQuaternion = Quaternion.Euler(0f, 0f, -transform.rotation.z);
-            GetComponent<RectTransform>().rotation = newQuaternion;
+            HPTitleText.text = "Your HP -";
+
+            HPValueText.color = Color.green;
+            HPTitleText.color = Color.green;
         }
     }
 }

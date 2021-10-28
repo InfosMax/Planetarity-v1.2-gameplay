@@ -73,10 +73,11 @@ namespace Planetarity.UI
 
         private void AddPlayerWorldCanvases(List<GameObject> PlayerObjects)
         {
-            foreach(GameObject obj in PlayerObjects)
+            foreach (GameObject obj in PlayerObjects)
             {
                 Instantiate(playerCanvas, obj.transform, false);
             }
+            player.GetComponentInChildren<PlayerCanvas>().InitMainPlayerUI();
         }
 
         void OnPlayerHPChanged(float newHP)

@@ -52,7 +52,6 @@ namespace Planetarity.GameManagement
                 {
                     MainPlayer = Planets[i].AddComponent<RealPlayer>();
                     MainPlayer.OnPlayerDied += PlayerDied;
-                    //Camera.main.transform.parent = Planets[i].transform;
                 }
                 else
                 {
@@ -65,15 +64,10 @@ namespace Planetarity.GameManagement
         void Update()
         {
             if (Input.GetKeyDown(KeyCode.P) && !UI_Controller.IsMainMenuActive)
-            {
-                togglePause();
-            }
+                TogglePause();
 
             if (Input.GetKeyDown(KeyCode.Escape))
-            {
                 ToggleMainMenu(!UI_Controller.IsMainMenuActive);
-            }
-
         }
 
         internal UnityAction SetPlayerRocketType()
@@ -81,7 +75,7 @@ namespace Planetarity.GameManagement
             throw new System.NotImplementedException();
         }
 
-        public void togglePause()
+        public void TogglePause()
         {
             SetPause(!isPaused);
         }
