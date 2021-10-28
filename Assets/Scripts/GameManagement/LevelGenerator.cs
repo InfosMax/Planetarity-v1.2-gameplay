@@ -13,43 +13,36 @@ namespace Planetarity.GameManagement
         private GameObject planetPrefab;
 
         private float distanceBetweenPlanets = 10f;
-
-        public float DistanceBetweenPlanets { get => distanceBetweenPlanets; set => distanceBetweenPlanets = value; }
-        public GameObject SunObj { get; set; }
         public List<GameObject> Planets { get; set; }
 
-        public void Generate(int enemiesMinNumber, int enemiesMaxNumber)
+        public List<GameObject> Generate(int enemiesMinNumber, int enemiesMaxNumber)
         {
             int enemiesNum = Random.Range(enemiesMinNumber, enemiesMaxNumber + 1);
             Debug.Log($"Enemies number is {enemiesNum}");
 
+            return Generate(enemiesNum);
+        }
+
+        public List<GameObject> Generate(int enemiesNumber)
+        {
             // Creating the Sun
             Instantiate(sunPrefab, Vector3.zero, Quaternion.identity);
 
-            createPlanets(enemiesNum);
+            return CreatePlanets(enemiesNumber);
         }
 
-        private void createPlanets(int planetsCount)
+        private List<GameObject> CreatePlanets(int planetsCount)
         {
             Planets = new List<GameObject>();
 
             for (var i = 0; i < planetsCount; i++)
             {
                 Planets.Add( Instantiate(planetPrefab,
-                    new Vector3(Sun.ComparingSize / 2f + (DistanceBetweenPlanets * (i + 1)), 0f, 0f),
+                    new Vector3(Sun.ComparingSize / 2f + (distanceBetweenPlanets * (i + 1)), 0f, 0f),
                     Quaternion.identity));
             }
 
-        }
-
-        public void removePlayerPlanetFromList(GameObject planet)
-        {
-            Planets.Remove(planet);
-        }
-
-        public GameObject[] getPlanetsGO()
-        {
-            return Planets.ToArray();
+            return Planets;
         }
     }
 }

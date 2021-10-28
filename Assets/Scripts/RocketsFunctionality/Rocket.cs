@@ -7,45 +7,26 @@ using Planetarity.PlayerFunctionality;
 
 namespace Planetarity.RocketsFunctionality
 {
-    public abstract class Rocket : MonoBehaviour, IRocket
+    [RequireComponent(typeof(Rigidbody))]
+    public class Rocket : MonoBehaviour, IRocket
     {
-        private GameObject launcherPlanet;
-        private Rigidbody rigidBody = null;
-        public abstract string RocketName { get; set; }
-        public abstract GameObject RocketPrefab { get; set; }
-        public abstract Texture2D RocketImg { get; set; }
+        protected Rigidbody rigidBody;
+        protected const float STANDARD_PROPERTY_VALUE = 3f;
 
-        public const float STANDARD_PROPERTY_VALUE = 3f;
-        protected Dictionary<RocketProperties, float> parameters = new Dictionary<RocketProperties, float>();
-        public Dictionary<RocketProperties, float> Parameters => parameters;
+        public Dictionary<RocketProperties, float> Parameters { get; set; } = new Dictionary<RocketProperties, float>();
+        public GameObject LauncherPlanet { get; set; }
 
-        public GameObject LauncherPlanet { get => launcherPlanet; set => launcherPlanet = value; }
 
         protected virtual void Awake()
         {
+            rigidBody = GetComponent<Rigidbody>();
             InitParameters();
-            loadResources();
-            GameManagement.GameManager.Instance.AddRocket(new KeyValuePair<string, (GameObject, Texture2D)>(RocketName, (RocketPrefab, RocketImg)));
         }
 
         protected virtual void Start()
         {
             PostInitCalculations();
             Destroy(gameObject, 10f);
-        }
-
-        protected void loadResources()
-        {
-            if(RocketName != null && RocketName != string.Empty)
-            {
-                RocketPrefab = Resources.Load<GameObject>("Prefabs/Rockets/" + RocketName);
-                RocketImg = Resources.Load<Texture2D>("Images/Rockets/" + RocketName);
-            }
-            else
-            {
-                Debug.Log("Specify rocket's name for getting it's prefab!");
-            }
-
         }
 
         protected virtual void InitParameters()
@@ -57,18 +38,27 @@ namespace Planetarity.RocketsFunctionality
             }
         }
 
+        //need decorator
+        public void OverwriteProperties(RocketParameters parameters)
+        {
+            if (!parameters)
+                return;
+
+            //Set available properies values
+            foreach (RocketPropertyEntry entry in parameters.properties)
+            {
+                Parameters[entry.property] = entry.value;
+            }
+        }
+
         protected virtual void PostInitCalculations()
         {
             // Rocket's weight equals to double FuelCapacity
             Parameters[RocketProperties.Weight] = Parameters[RocketProperties.FuelCapacity] * 2f;
             Parameters[RocketProperties.Damage] *= 2f;
             Parameters[RocketProperties.Acceleration] *= 5f;
-            rigidBody = GetComponent<Rigidbody>();
-            if (rigidBody)
-            {
-                rigidBody.mass = Parameters[RocketProperties.Weight];
-            }
-                
+
+            rigidBody.mass = Parameters[RocketProperties.Weight];
         }
 
         public void Fly()
@@ -77,8 +67,8 @@ namespace Planetarity.RocketsFunctionality
             {
                 if(Parameters[RocketProperties.FuelCapacity] > 0f)
                 {
-                    rigidBody.AddForce(transform.forward * Parameters[RocketProperties.Acceleration] * Time.deltaTime * 300f, ForceMode.Force);
-                    Parameters[RocketProperties.FuelCapacity] -= Time.deltaTime;
+                    rigidBody.AddForce(transform.forward * Parameters[RocketProperties.Acceleration] * Time.fixedDeltaTime * 300f, ForceMode.Force);
+                    Parameters[RocketProperties.FuelCapacity] -= Time.fixedDeltaTime;
                 }
             }
         }
@@ -94,7 +84,7 @@ namespace Planetarity.RocketsFunctionality
             return Damage;
         }
 
-        private void Update()
+        private void FixedUpdate()
         {
             Fly();
         }
@@ -119,6 +109,12 @@ namespace Planetarity.RocketsFunctionality
             GetComponent<ParticleSystem>().Play();
             Destroy(gameObject, 4f);
         }
+    }
+
+    [Serializable]
+    public enum RocketType
+    {
+        Fast, Short, Heavy, Easy
     }
 }
 

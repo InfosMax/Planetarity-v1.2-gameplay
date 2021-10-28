@@ -1,10 +1,7 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-namespace Planetarity.RocketsFunctionality
+﻿namespace Planetarity.RocketsFunctionality
 {
     // Theoretical range of parameter values [1, 5]
+    [System.Serializable]
     public enum RocketProperties
     {
         Weight,
@@ -12,5 +9,12 @@ namespace Planetarity.RocketsFunctionality
         Cooldown,
         Damage,
         FuelCapacity
+    }
+
+    [System.Serializable]
+    public struct RocketPropertyEntry
+    {
+        public RocketProperties property;
+        public float value;
     }
 }

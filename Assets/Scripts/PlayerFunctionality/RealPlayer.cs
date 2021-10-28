@@ -1,38 +1,49 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using Planetarity.GameManagement;
+﻿using UnityEngine;
 using Planetarity.RocketsFunctionality;
+using UnityEngine.EventSystems;
 
 namespace Planetarity.PlayerFunctionality
 {
     public class RealPlayer: Player
     {
-        private string selectedRocketType;
-        public string SelectedRocketType { get => selectedRocketType; set => selectedRocketType = value; }
+        private RocketType selectedRocketType;
+        private EventSystem eventSystem;
 
-        protected override bool CheckLaunchPossible(string rocketName)
+        public override string DieInformText { get; } = "YOU HAVE LOST THE GAME!!";
+
+        protected override bool CheckLaunchPossible()
         {
-            return rocketsStorage.TryGetRocket(selectedRocketType) && base.CheckLaunchPossible(rocketName) ;
+            if (base.CheckLaunchPossible())
+                if (rocketsStorage.TryGetRocket(selectedRocketType))
+                    return true;
+                else
+                {
+                    gameManager.ShowNotification("You don't have such a rocket!");
+                    return false;
+                }
+            else
+            {
+                gameManager.ShowNotification("Launch not ready yet!");
+                return false;
+            }
         }
 
         protected override void Start()
         {
             base.Start();
-            selectedRocketType = gameManager.GetRocketsNames()[0];
+            selectedRocketType = (RocketType)0;
+            eventSystem = EventSystem.current;
         }
 
-        protected override Vector3 GetRocketDirrection()
+        protected override Vector3 GetRocketSendDirection()
         {
             Vector3 mousePos = Input.mousePosition;
             mousePos.z = -Camera.main.transform.position.z;
             mousePos = Camera.main.ScreenToWorldPoint(mousePos);
-            Vector3 mouseDirrection = (mousePos - transform.position).normalized;
-
-            return mouseDirrection;
+            return (mousePos - transform.position).normalized;
         }
 
-        public void SetRocketType(string rocketType)
+        public void SetRocketType(RocketType rocketType)
         {
             selectedRocketType = rocketType;
             gameManager.ShowNotification($"Rocket type set to {rocketType}");
@@ -41,7 +52,7 @@ namespace Planetarity.PlayerFunctionality
         protected override void Update()
         {
             base.Update();
-            if (Input.GetMouseButtonDown(0))
+            if (Input.GetMouseButtonDown(0) && !eventSystem.currentSelectedGameObject)
             {
                 LaunchRocket(selectedRocketType);
             }

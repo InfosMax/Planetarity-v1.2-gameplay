@@ -4,11 +4,10 @@ using UnityEngine;
 
 namespace Planetarity.RocketsFunctionality
 {
-    public interface IRocketPrefabManager
+    public interface IRocketTypeManager
     {
-        (GameObject, Texture2D) GetRocketResources(string rocketName);
-        GameObject GetRocketPrefab(string rocketName);
-        string[] GetRocketsNames();
+        RocketParameters GetRocketParameters(RocketType rocketType);
+        GameObject GetRocketPrefab(RocketType rocketType);
     }
 }
 

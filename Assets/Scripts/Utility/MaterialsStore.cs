@@ -5,16 +5,14 @@ using UnityEngine;
 namespace Planetarity.Utility
 {
     [System.Serializable]
-    public class MaterialsStore : Singleton<MaterialsStore>
+    public class MaterialsStore : MonoBehaviour
     {
         [SerializeField]
         private List<Material> materials;
 
-        public List<Material> Materials { get => materials; set => materials = value; }
-
         public Material GetRandomPlanetMaterial()
         {
-            return Materials[Random.Range(0, Materials.Count)];
+            return materials[Random.Range(0, materials.Count)];
         }
     }
 }

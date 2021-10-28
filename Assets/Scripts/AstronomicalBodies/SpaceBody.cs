@@ -7,13 +7,13 @@ namespace Planetarity.AstronomicalBodies
 {
     public abstract class SpaceBody : MonoBehaviour
     {
-        protected const int MIN_SIZE = 4;
-        public int Size { get; protected set; }
-        public float Speed { get; set; }
-        public SphereCollider ObjectGravityZone { get; set; }
-
+        protected const int MinSize = 4;
         protected float selfRotationSpeedModifier = .05f;
-        protected Vector3 rotationVector = Vector3.one;
+        protected Vector3 rotationVector;
+
+        protected int Size { get; set; }
+        protected float Speed { get; set; }
+        protected SphereCollider ObjectGravityZone { get; set; }
 
         protected void RotateSelf()
         {
@@ -44,7 +44,7 @@ namespace Planetarity.AstronomicalBodies
 
         protected virtual void InitAppearance()
         {
-            Size = MIN_SIZE;
+            Size = MinSize;
             transform.localScale *= Size;
         }
 

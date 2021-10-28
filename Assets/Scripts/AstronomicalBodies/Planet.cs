@@ -8,38 +8,33 @@ namespace Planetarity.AstronomicalBodies
 {
     public class Planet : SpaceBody
     {
+        private const float DefaultSpeed = 5f;
+        private const float DefaultRotationSpeed = 10f;
         private float orbitRotationSpeed;
-        public float OrbitRotationSpeed { get => orbitRotationSpeed; set => orbitRotationSpeed = value; }
         private bool isRotationClockwise;
-        public bool IsClockwise { get => isRotationClockwise; set => isRotationClockwise = value; }
-
-        public Planet(int size, float speed)
-        {
-            Size = size;
-            Speed = speed;
-        }
+        private bool IsClockwise { get => isRotationClockwise; set => isRotationClockwise = value; }
 
         protected override void Awake()
         {
             base.Awake();
             // Clockwise or counter clockwise? 
             IsClockwise = Random.Range(0, 2) == 0 ? true : false;
-            OrbitRotationSpeed = Random.Range(10f, 25f);
-            Speed = 5f;
+            orbitRotationSpeed = Random.Range(DefaultRotationSpeed, 2.5f * DefaultRotationSpeed);
+            Speed = DefaultSpeed;
             InitAppearance();
         }
 
         protected override void InitAppearance()
         {
-            Size = Random.Range(MIN_SIZE, Sun.ComparingSize - 2);
+            Size = Random.Range(MinSize, Sun.ComparingSize - 2);
             transform.localScale *= Size;
-            GetComponent<MeshRenderer>().material = MaterialsStore.Instance.GetRandomPlanetMaterial();
+            GetComponent<MeshRenderer>().material = GameManagement.GameManager.Instance.PlanetMaterials.GetRandomPlanetMaterial();
         }
 
         private void RotateAroundSun()
         {
             transform.RotateAround(Vector3.zero, Vector3.forward,
-                (isRotationClockwise ? OrbitRotationSpeed : -OrbitRotationSpeed) * Time.deltaTime);
+                (isRotationClockwise ? orbitRotationSpeed : -orbitRotationSpeed) * Time.deltaTime);
         }
 
         private void ChangeRotationDirrection() => IsClockwise = !IsClockwise;

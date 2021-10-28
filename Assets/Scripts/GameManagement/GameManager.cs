@@ -1,58 +1,64 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 using Planetarity.Utility;
 using Planetarity.RocketsFunctionality;
 using Planetarity.UI;
 using Planetarity.PlayerFunctionality;
 using UnityEngine.SceneManagement;
+using UnityEngine.Events;
 
 namespace Planetarity.GameManagement
 {
-    public class GameManager : Singleton<GameManager>, IRocketPrefabManager
+    public class GameManager : Singleton<GameManager>
     {
+        [SerializeField]
+        private int MinEnemyNumber = 3;
+        [SerializeField]
+        private int MaxEnemyNumber = 6;
         private bool isPaused = false;
-        private RocketLaunchStation rocketLaunchStation;
-        private LevelGenerator levelGenerator;
+        private ILevelGenerator levelGenerator;
         private UIController UI_Controller;
-        private RocketPrefabsManager rocketPrefabManager;
-        private MaterialsStore materialsStore;
-        private RealPlayer player;
-        public RealPlayer Player { get => player; set => player = value; }
-        public MaterialsStore PlanetMaterials { get => materialsStore; set => materialsStore = value; }
+        public List<GameObject> AllPlanets { get; set; }
+        public IRocketTypeManager RocketTypes { get; set; }
+        public IRocketLaunchSystem RocketLauncher { get; set; }
+        public RealPlayer MainPlayer { get; set; }
+        public MaterialsStore PlanetMaterials { get; set; }
+        public bool GameOver => AllPlanets.Count <= 1;
 
         void Awake()
         {
-            rocketPrefabManager = new RocketPrefabsManager();
-
-            rocketLaunchStation = GetComponent<RocketLaunchStation>();
+            RocketLauncher = new RocketLaunchSystem(this);
+            RocketTypes = GetComponent<RocketTypeManager>();
             levelGenerator = GetComponent<LevelGenerator>();
             PlanetMaterials = GetComponent<MaterialsStore>();
             UI_Controller = GetComponent<UIController>();
 
-            prepareGameProcess();
+            PrepareGameProcess();
         }
 
-        void prepareGameProcess()
+        void PrepareGameProcess()
         {
-            levelGenerator.Generate(3, 6);
-            AssignPlayerScripts(levelGenerator.getPlanetsGO());
+            AllPlanets = levelGenerator.Generate(MinEnemyNumber, MaxEnemyNumber);
+            AssignPlayerScripts(AllPlanets);
+            UI_Controller.Init(MainPlayer, AllPlanets);
         }
 
-        private void AssignPlayerScripts(GameObject[] Planets)
+        private void AssignPlayerScripts(List<GameObject> Planets)
         {
-            int playerIndex = Random.Range(0, Planets.Length);
-            for (var i = 0; i < Planets.Length; i++)
+            int playerIndex = Random.Range(0, Planets.Count);
+            for (var i = 0; i < Planets.Count; i++)
             {
-                if(playerIndex == i)
+                if (playerIndex == i)
                 {
-                    Player = Planets[i].AddComponent<RealPlayer>();
+                    MainPlayer = Planets[i].AddComponent<RealPlayer>();
+                    MainPlayer.OnPlayerDied += PlayerDied;
                     //Camera.main.transform.parent = Planets[i].transform;
                 }
                 else
                 {
-                    Planets[i].AddComponent<AIPlayer>();
+                    Planets[i].AddComponent<AIPlayer>().OnPlayerDied += PlayerDied;
                 }
+
             }
         }
 
@@ -70,12 +76,17 @@ namespace Planetarity.GameManagement
 
         }
 
-        public void togglePause()
+        internal UnityAction SetPlayerRocketType()
         {
-            setPause(!isPaused);
+            throw new System.NotImplementedException();
         }
 
-        public void setPause(bool doSet)
+        public void togglePause()
+        {
+            SetPause(!isPaused);
+        }
+
+        public void SetPause(bool doSet)
         {
             if (doSet)
             {
@@ -87,26 +98,26 @@ namespace Planetarity.GameManagement
                 isPaused = false;
                 Time.timeScale = 1f;
             }
-                
+
         }
 
         public void ToggleMainMenu(bool activate)
         {
             if (activate)
             {
-                setPause(true);
+                SetPause(true);
                 UI_Controller.ToggleMainMenu();
             }
             else
             {
-                setPause(false);
+                SetPause(false);
                 UI_Controller.ToggleMainMenu();
             }
         }
 
         public void Restart()
         {
-            setPause(!isPaused);
+            SetPause(!isPaused);
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
         }
 
@@ -115,23 +126,21 @@ namespace Planetarity.GameManagement
             Application.Quit();
         }
 
-        public void SelectPlayerRocketName(string rocketName)
+        private void PlayerDied(Player deadPlayer)
         {
-            player.SetRocketType(rocketName);
+            AllPlanets.Remove(deadPlayer.gameObject);
+            UI_Controller.ShowNotification(deadPlayer.DieInformText);
+            
+            if (MainPlayer && deadPlayer != MainPlayer && !MainPlayer.IsDead)
+            {
+                if (AllPlanets.Count == 1)
+                    UI_Controller.ShowNotification($"Congratulations!\nYou have won the game!");
+                else
+                    UI_Controller.ShowNotification($"{AllPlanets.Count - 1 } enemies remaining! ");
+            }
+
+            deadPlayer.OnPlayerDied -= PlayerDied;
         }
-        public void PlayerDied(Player player) => levelGenerator.removePlayerPlanetFromList(player.gameObject);
-
-        public GameObject[] GetPlanets() => levelGenerator.getPlanetsGO();
-
-        public RocketLaunchStation GetRocketLaunchStation() => rocketLaunchStation;
-
-        public void AddRocket(KeyValuePair<string, (GameObject, Texture2D)> rocket) => RocketPrefabsManager.AddRocket(rocket);
-
-        public (GameObject, Texture2D) GetRocketResources(string rocketName) => rocketPrefabManager.GetRocketResources(rocketName);
-
-        public GameObject GetRocketPrefab(string rocketName) => rocketPrefabManager.GetRocketPrefab(rocketName);
-
-        public string[] GetRocketsNames() => rocketPrefabManager.GetRocketsNames();
 
         public void ShowNotification(string text) => UI_Controller.ShowNotification(text);
 

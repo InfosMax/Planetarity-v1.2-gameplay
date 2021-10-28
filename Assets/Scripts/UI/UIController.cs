@@ -1,8 +1,8 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using Planetarity.PlayerFunctionality;
+using System.Collections.Generic;
 
 namespace Planetarity.UI
 {
@@ -10,19 +10,18 @@ namespace Planetarity.UI
     {
         [SerializeField]
         private GameObject notificationPanel;
-        private bool isRoutineShowing;
-        private bool isMainMenuActive = false;
         private Text notificationText;
         [SerializeField]
         private Slider slider;
         [SerializeField]
-        private Text HPtext;
+        private Text HPText;
         [SerializeField]
         private Canvas playerCanvas;
+        [SerializeField]
+        private Transform rocketSelectionPanel;
 
         private Image sliderImage;
-        private Player player;
-        private GameManagement.GameManager GM;
+        private RealPlayer player;
         public Color camBackgroundColor1;
         public Color camBackgroundColor2;
         [SerializeField]
@@ -31,34 +30,58 @@ namespace Planetarity.UI
         [SerializeField]
         private Canvas screenSpaceCanvas;
 
-        public bool IsMainMenuActive { get => isMainMenuActive; set => isMainMenuActive = value; }
+        public bool IsMainMenuActive { get; set; }
 
         //private UIBuilder builder;
 
-        private void Start()
+        private void Awake()
         {
             notificationText = notificationPanel.transform.GetChild(0).GetComponent<Text>();
-            GM = GameManagement.GameManager.Instance;
-            player = GM.Player;
+            sliderImage = slider.transform.GetChild(0).GetComponent<Image>();
+        }
+
+        public void Init(RealPlayer player, List<GameObject> allPlayerObjects)
+        {
+            this.player = player;
+            InitPlayerUI();
+            AddPlayerWorldCanvases(allPlayerObjects);
+        }
+
+        private void InitPlayerUI()
+        {
             player.HPchanged += OnPlayerHPChanged;
             player.CooldownChanged += OnPlayerCooldownChanged;
 
-            sliderImage = slider.transform.GetChild(0).GetComponent<Image>();
-
-            addPlayerWorldCanvases();
+            InitRocketButtonsGraphics();
         }
 
-        private void addPlayerWorldCanvases()
+        private void InitRocketButtonsGraphics()
         {
-            foreach(GameObject planet in GM.GetPlanets())
+            var availableRocketTypes = player.GetAvailableRocketTypes();
+            Button[] buttons = rocketSelectionPanel.GetComponentsInChildren<Button>();
+            for (int i = 0; i < availableRocketTypes.Length; i++)
             {
-                Instantiate(playerCanvas, planet.transform, false);
+                //RocketType tempRocketType = availableRocketTypes[i]; //Needs to save value for each closure
+                var typeParameters = GameManagement.GameManager.Instance.RocketTypes.GetRocketParameters(availableRocketTypes[i]);
+                if(buttons.Length > i)
+                {
+                    buttons[i].GetComponent<Image>().sprite = typeParameters.picture;
+                    buttons[i].onClick.AddListener(() => player.SetRocketType(typeParameters.rocketType));
+                }
+            }
+        }
+
+        private void AddPlayerWorldCanvases(List<GameObject> PlayerObjects)
+        {
+            foreach(GameObject obj in PlayerObjects)
+            {
+                Instantiate(playerCanvas, obj.transform, false);
             }
         }
 
         void OnPlayerHPChanged(float newHP)
         {
-            HPtext.text = "    Current HP - " + newHP;
+            HPText.text = "    Current HP - " + newHP;
         }
 
         void OnPlayerCooldownChanged(float newCD)

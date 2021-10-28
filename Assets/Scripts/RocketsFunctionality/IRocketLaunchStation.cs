@@ -5,9 +5,9 @@ using Planetarity.PlayerFunctionality;
 
 namespace Planetarity.RocketsFunctionality
 {
-    public interface IRocketLaunchStation
+    public interface IRocketLaunchSystem
     {
-        Rocket InitiateLaunch(Player initiator, string rocketName, Vector3 dirrection);
+        Rocket InitiateLaunch(Player initiator, RocketType rocketName, Vector3 dirrection);
     }
 }
 
